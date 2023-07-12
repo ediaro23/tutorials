@@ -1,0 +1,11 @@
+crocoddyl
+example-robot-data
+virtualenv
+jupyterlab
+notebook
+matplotlib
+meshcat
+quadprog
+scipy
+tensorflow
+
