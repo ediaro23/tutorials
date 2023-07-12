@@ -11,16 +11,23 @@ The notebooks are in Python and based on the software [Pinocchio](https://github
 ### On a DICE machine
 On DICE, the required dependencies to run the project are already available. 
 You only need to "clone" the project to a local folder of your choice.
-Open a terminal (CTRL + ALT + T) one and follow the commands below:
+Open a terminal (CTRL + ALT + T) and follow the commands below:
 
-- `` cd ~``
+-   Move to home directory.
 
-  Move to home directory.
+`` cd ~``
 
+  
+-   Create the aro23 directory if not already done
 
-- `` git clone https://github.com/ediaro23/tutorials/``
+  `` mkdir -p aro23 && cd aro23``
+  
 
-    Clone the tutorials inside your home directory.
+- Clone the tutorials inside your home directory.
+
+`` git clone https://github.com/ediaro23/tutorials/``
+
+    
 
 You should be done! See [below](#using-and-updating-the-notebooks) to check that your installation is working 
 
@@ -41,7 +48,7 @@ TBD...
 ### Running a notebook
 On your terminal, cd into the tutorials folder:
 ```bash
-cd  ~/ediaro23/tutorials/
+cd  ~/aro23/tutorials/
 ```
 Now run Jupyter notebook with the command
 ```bash
