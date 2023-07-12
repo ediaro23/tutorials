@@ -22,7 +22,7 @@ Open a terminal (CTRL + ALT + T) one and follow the commands below:
 
     Clone the tutorials inside your home directory.
 
-You should be done! See below to check that your installation is working
+You should be done! See [below](#using-and-updating-the-notebooks) to check that your installation is working 
 
 ### Linux, Python 3, PyPI
 
@@ -38,6 +38,18 @@ Once you have the dependencies, you can start the server with `jupyter notebook`
 TBD...
 
 ## Using and updating the notebooks
+### Running a notebook
+On your terminal, cd into the tutorials folder:
+```bash
+cd  ~/ediaro23/tutorials/
+```
+Now run Jupyter notebook with the command
+```bash
+jupyter notebook .
+```
+Click on '0_introduction_to_numerical_robotics.ipynb' to open the first notebook.
+
+### Editing the notebook and updates
 To avoid conflicts (see right after), it is recommended to make a local copy of a notebook before working on it.
 
 If the repository changes (for example when new tutorials are pushed / a bug has been found), you will need to update your local
