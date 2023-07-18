@@ -1,0 +1,18 @@
+
+#see https://edin.ac/3XWdqzz for explanation
+#note that the code below does not handle all cases and pnly
+#returns one solution
+#you can implement the complete function as an exercise
+
+def analyticalinversegeometry(x, y): 
+    '''Compute inverse geometry assuming solution exists and x y is not at a singularity position '''
+    q2 = (np.arccos((x**2 + y**2 - 2.) / 2.))
+    theta = np.arctan2(y,x)
+    q1 = theta - np.arctan2(np.sin(q2),1 + np.cos(q2))
+    return np.array([q1,q2])
+
+viz.applyConfiguration("target",planar(0.5, 0.5, 0.))
+qres = analyticalinversegeometry(0.5,0.5)
+display(qres)
+qres
+    

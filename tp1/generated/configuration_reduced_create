@@ -1,0 +1,7 @@
+viz.addSphere('joint1',.1,[1,0,0,1]) #joints in red
+viz.addSphere('joint2',.1,[1,0,0,1])
+viz.addSphere('effector',.1,[0,0,1,1]) #effector in blue
+viz.addCylinder('arm1',.75,.05,[.65,.65,.65,1])
+viz.addCylinder('arm2',.75,.05,[.65,.65,.65,1])
+viz.addSphere('target',.1001,[0,.8,.1,1]) #target in green
+viz.applyConfiguration("target",planar(0.5, 0.5, 0.))

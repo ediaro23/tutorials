@@ -1,0 +1,3 @@
+def callback_4(p):
+    display_4(p)
+    time.sleep(.5)

@@ -1,0 +1,10 @@
+def display_4(p):
+    '''Display the robot in the Viewer. '''
+    assert (p.shape == (dim, ))
+    q = positionstoangles(p)   
+    x1, y1, x2, y2 = p
+    viz.applyConfiguration('joint1',planar(0,           0,           0))
+    viz.applyConfiguration('arm1'  ,planar(x1 / 2,      y1 / 2,      q[0]))
+    viz.applyConfiguration('joint2',planar(x1,          y1,          q[0]))
+    viz.applyConfiguration('arm2'  ,planar(x1 + (x2-x1) / 2, y1 + (y2-y1) / 2, q[0]+q[1]))
+    viz.applyConfiguration('effector',planar(x2,  y2, q[0] + q[1]))
