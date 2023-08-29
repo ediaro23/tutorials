@@ -1,3 +1,0 @@
-def callback(q):
-    display(q)
-    time.sleep(.5)

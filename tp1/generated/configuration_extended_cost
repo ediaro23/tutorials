@@ -1,3 +1,0 @@
-def cost_4(p):
-    eff = endeffector_4(p)
-    return norm(eff - target)**2

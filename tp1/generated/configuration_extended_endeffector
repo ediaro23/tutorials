@@ -1,4 +1,0 @@
-def endeffector_4(p):
-    assert (p.shape == (dim, ))
-    x1, y1, x2, y2 = p
-    return np.array([x2, y2])
