@@ -1,0 +1,10 @@
+def aMb(theta2):
+    M = np.eye(4) #4*4 identity
+    M[:3,:3] = R(theta2)    
+    M[0 ,-1] = l1 # first line of last column
+    return M
+
+def oMa(theta1):
+    M = np.eye(4) #4*4 identity
+    M[:3,:3] = R(theta1)    
+    return M

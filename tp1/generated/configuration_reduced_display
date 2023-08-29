@@ -1,13 +1,31 @@
+#computes all the transformation matrices and returns the end effector position in the origin frame
+def forwardgeometry(q):
+    return [oMa(q[0]),aMb(q[1]),bMc(q[2])]
+
+#computes the end effector position
+def effector(q):
+    return oMa(q[0]) @ aMb(q[1]) @ bMc(q[2]) @ ce
+
 def display(q):
     '''Compute forward geometry and 
     Display the robot in the viewer. '''
-    assert (q.shape == (2,))
-    c0 = np.cos(q[0])
-    s0 = np.sin(q[0])
-    c1 = np.cos(q[0] + q[1])
-    s1 = np.sin(q[0] + q[1])
-    viz.applyConfiguration('joint1',planar(0,           0,           0))
-    viz.applyConfiguration('arm1'  ,planar(c0 / 2,      s0 / 2,      q[0]))
-    viz.applyConfiguration('joint2',planar(c0,          s0,          q[0]))
-    viz.applyConfiguration('arm2'  ,planar(c0 + c1 / 2, s0 + s1 / 2, q[0] + q[1]))
-    viz.applyConfiguration('effector',planar(c0 + c1,     s0 + s1,     q[0] + q[1]))
+    xMys = forwardgeometry(q)
+    currenttransform = np.eye(4)
+    currentjointpos = np.zeros(2)
+    for (i, xMy) in enumerate(xMys):
+        bodyorientation = matrixToRpy(currenttransform[:3,:3])[-1] #pinocchio helper to get Euler angles from rotation
+        #update transform        
+        currenttransform = currenttransform @ xMy
+        jointPos = currenttransform[:2,-1]
+        #display joint i
+        viz.applyConfiguration(jointnames[i],planar(jointPos[0], jointPos[1], 0.))
+        #display body.  
+        bodycenter = currentjointpos + (jointPos - currentjointpos) /2.
+        viz.applyConfiguration(bodynames[i],planar(bodycenter[0], bodycenter[1], bodyorientation))
+        currentjointpos = jointPos
+    oe =  currenttransform @ ce
+    bodycenter = currentjointpos + (oe[:2] - currentjointpos)  / 2.
+    bodyorientation = matrixToRpy(currenttransform[:3,:3])[-1]
+    viz.applyConfiguration(bodynames[-1],planar(bodycenter[0], bodycenter[1], bodyorientation))
+    viz.applyConfiguration("effector",planar(oe[0], oe[1], 0.))
+        

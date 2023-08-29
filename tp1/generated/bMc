@@ -1,0 +1,6 @@
+def bMc(theta3):
+    M = np.zeros((4,4)) #4*4 matrix
+    M[:3,:3] = R(theta3)
+    M[0 ,-1] = l2 # first line of last column
+    M[-1,-1] = 1 #don't forget the 1 on last line / column
+    return M

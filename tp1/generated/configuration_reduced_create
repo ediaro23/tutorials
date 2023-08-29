@@ -1,7 +1,27 @@
-viz.addSphere('joint1',.1,[1,0,0,1]) #joints in red
-viz.addSphere('joint2',.1,[1,0,0,1])
-viz.addSphere('effector',.1,[0,0,1,1]) #effector in blue
-viz.addCylinder('arm1',.75,.05,[.65,.65,.65,1])
-viz.addCylinder('arm2',.75,.05,[.65,.65,.65,1])
-viz.addSphere('target',.1001,[0,.8,.1,1]) #target in green
-viz.applyConfiguration("target",planar(0.5, 0.5, 0.))
+bodynames  = ['body'+str(i) for i in range(4)]
+jointnames = ['joint'+str(i) for i in range(4)]
+
+#defining some constants
+# feel free to play with these
+l1 = l2 = .75
+l3 = 0.4
+bodywidth = 0.05 
+rootwidth = bodywidth * 3
+jointwidth = 0.08
+
+#colors
+bodycolor  = [.65,.65,.65,1] #grey
+jointcolor = [1,0,0,1] #red
+
+#creating bodies
+viz.addBox     (bodynames[0],[rootwidth for _ in range(3)],bodycolor)
+viz.addCylinder(bodynames[1],l1,bodywidth,bodycolor)
+viz.addCylinder(bodynames[2],l2,bodywidth,bodycolor)
+viz.addCylinder(bodynames[3],l3,bodywidth,bodycolor)
+    
+#creating joints
+for i in range(4):
+    viz.addSphere(jointnames[i],jointwidth,jointcolor)
+    
+#end-effector marker
+viz.addSphere("effector",jointwidth,[0,0,1,1]) #blue
