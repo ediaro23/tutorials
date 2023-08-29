@@ -1,0 +1,5 @@
+viz.addSphere('joint1',.1,[1,0,0,1]) #joints in red
+viz.addSphere('joint2',.1,[1,0,0,1])
+viz.addSphere('effector',.1,[0,0,1,1]) #effector in blue
+viz.addCylinder('body1',.75,.05,[.65,.65,.65,1])
+viz.addCylinder('body2',.75,.05,[.65,.65,.65,1])

@@ -1,0 +1,6 @@
+def positionstoangles(p):
+    x1, y1, x2, y2 = p
+    q1 = np.arctan2(x1,y1)
+    q1plusq2 = np.arctan2(x2,y2)
+    q2 = q1plusq2 - q1
+    return np.array(q1,q2)
