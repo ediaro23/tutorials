@@ -1,0 +1,14 @@
+def distance(q1,q2):    
+    '''Return the euclidian distance between two configurations'''
+    return np.linalg.norm(q2-q1)
+        
+def NEAREST_VERTEX(G,q_rand):
+    '''returns the index of the Node of G with the configuration closest to q_rand  '''
+    min_dist = 10e4
+    idx=-1
+    for (i,node) in enumerate(G):
+        dist = distance(node[1],q_rand) 
+        if dist < min_dist:
+            min_dist = dist
+            idx = i
+    return i
