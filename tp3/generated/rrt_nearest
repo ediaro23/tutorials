@@ -11,4 +11,4 @@ def NEAREST_VERTEX(G,q_rand):
         if dist < min_dist:
             min_dist = dist
             idx = i
-    return i
+    return idx

@@ -1,0 +1,20 @@
+from math import ceil
+from time import sleep
+
+def displayedge(q0,q1,vel=2.): #vel in sec.    
+    '''Display the path obtained by linear interpolation of q0 to q1 at constant velocity vel'''
+    dist = distance(q0,q1)
+    duration = dist / vel    
+    nframes = ceil(48. * duration)
+    f = 1./48.
+    for i in range(nframes-1):
+        viz.display(lerp(q0,q1,float(i)/nframes))
+        sleep(f)
+    viz.display(q1)
+    sleep(f)
+    
+def displaypath(path):
+    for q0, q1 in zip(path[:-1],path[1:]):
+        displayedge(q0,q1)
+    
+displaypath(path)

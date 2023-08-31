@@ -1,0 +1,22 @@
+def lerp(q0,q1,t):    
+    return q0 * (1 - t) + q1 * t
+
+def NEW_CONF(q_near,q_rand,discretisationsteps, delta_q = None):
+    '''Return the closest configuration q_new such that the path q_near => q_new is the longest
+    along the linear interpolation (q_near,q_rand) that is collision free and of length <  delta_q'''
+    q_end = q_rand.copy()
+    dist = distance(q_near, q_rand)
+    if delta_q is not None and dist > delta_q:
+        #compute the configuration that corresponds to a path of length delta_q
+        q_end = lerp(q_near,q_rand,delta_q/dist)
+        dist = delta_q
+    dt = dist / discretisationsteps
+    for i in range(1,discretisationsteps):
+        q = lerp(q_near,q_end,dt*i)
+        if coll(q):
+            return lerp(q_near,q_end,dt*(i-1))
+    return q_end
+
+
+def VALID_EDGE(q_new,q_goal,discretisationsteps):
+    return np.linalg.norm(q_goal -NEW_CONF(q_new, q_goal,discretisationsteps)) < 1e-3
