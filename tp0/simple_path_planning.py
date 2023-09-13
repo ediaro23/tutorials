@@ -142,6 +142,7 @@ def plotConfigurationSpace(hcol,hfree,markerSize=20):
      plt.scatter(h[:,0],h[:,1],c=h[:,3],s=markerSize,lw=0)
      plt.title("Distance to the obstacles")
      plt.colorbar()
+     plt.tight_layout(pad=0.8)
 
 hcol,hfree = sampleSpace(100)
 plotConfigurationSpace(hcol,hfree)
