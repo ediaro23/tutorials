@@ -1,11 +1,10 @@
-crocoddyl
-example-robot-data
-virtualenv
-jupyterlab
-notebook
-matplotlib
-meshcat
-quadprog
-scipy
-tensorflow
+example-robot-data==4.0.8
+virtualenv==20.0.17
+jupyterlab==4.0.5
+notebook==6.0.3
+matplotlib==3.1.2
+meshcat==0.3.2
+quadprog==0.1.11
+scipy==1.10.1
+tensorflow==2.13.0
 
