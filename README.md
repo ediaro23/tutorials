@@ -42,7 +42,7 @@ You should be done! See [below](#using-and-updating-the-notebooks) to check that
 
 ### Linux, Python 3, PyPI
 
-On a Linux system with Python 3, you can get the dependencies directly with +[pip (see installation procedure and update below)](#installing-pip):
+On a Linux system with Python 3.8, you can get the dependencies directly with +[pip (see installation procedure and update below)](#installing-pip):
 ```bash
 python3 -m pip install -r requirements.txt
 ```
