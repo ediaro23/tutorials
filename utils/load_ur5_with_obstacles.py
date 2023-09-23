@@ -108,3 +108,61 @@ class Target:
                                                 [ self.position[0], 0, self.position[1],
                                                   1.,0.,0.0,0. ])
             self.viz.viewer.gui.refresh()
+
+
+def capsule(robot, idx, xyzrpy, rad, length):  
+    obs = pin.GeometryObject.CreateCapsule(rad,length)  # Pinocchio obstacle object
+    obs.meshColor = np.array([ 1.0, 0.2, 0.2, 1.0 ])    # Don't forget me, otherwise I am transparent ...
+    obs.name = "obs%d"%idx                               # Set object name
+    obs.parentJoint = 0                                 # Set object parent = 0 = universe
+    obs.placement = XYZRPYtoSE3(xyzrpy)  # Set object placement wrt parent
+    robot.collision_model.addGeometryObject(obs)  # Add object to collision model
+    robot.visual_model   .addGeometryObject(obs)  # Add object to visual model
+    
+
+def load_ur5_with_obstacles_rrt(robotname='ur5',reduced=False):
+
+    ### Robot
+    # Load the robot
+    robot = robex.load(robotname)
+
+    ### If reduced, then only keep should-tilt and elbow joint, hence creating a simple R2 robot.
+    if reduced:
+        unlocks = [1,2]
+        robot.model,[robot.visual_model,robot.collision_model]\
+            = pin.buildReducedModel(robot.model,[robot.visual_model,robot.collision_model],
+                                    [ i+1 for i in range(robot.nq) if i not in unlocks ],robot.q0)
+        robot.data = robot.model.createData()
+        robot.collision_data = robot.collision_model.createData()
+        robot.visual_data = robot.visual_model.createData()
+        robot.q0 = robot.q0[unlocks].copy()
+
+    ### Obstacle map
+    # Capsule obstacles will be placed at these XYZ-RPY parameters
+    oMobs = [[ 0.40,  0.,  0.30, np.pi/2,0,0], 
+             [ 0.40,  0.,  0.75, np.pi/2,0,0],
+             [ -0.39,  0.,  -0.39, np.pi/2,0,0], 
+             [ -0.5,  0.,  0.5, np.pi/2,0,0] ]
+
+    # Load visual objects and add them in collision/visual models
+    color = [ 1.0, 0.2, 0.2, 1.0 ]                       # color of the capsules
+    rad,length = .1,0.4                                  # radius and length of capsules
+    for i,xyzrpy in enumerate(oMobs):
+        capsule(robot, i, xyzrpy, rad, length)
+
+    ### Collision pairs
+    nobs = len(oMobs)
+    nbodies = robot.collision_model.ngeoms-nobs
+    robotBodies = range(nbodies)
+    envBodies = range(nbodies,nbodies+nobs) 
+    robot.collision_model.removeAllCollisionPairs()
+    for a,b in itertools.product(robotBodies,envBodies):
+        robot.collision_model.addCollisionPair(pin.CollisionPair(a,b))
+    
+    ### Geom data
+    # Collision/visual models have been modified => re-generate corresponding data.
+    robot.collision_data = pin.GeometryData(robot.collision_model)
+    robot.visual_data    = pin.GeometryData(robot.visual_model   )
+
+    return robot
+
