@@ -16,7 +16,7 @@ def XYZRPYtoSE3(xyzrpy):
     p = np.array(xyzrpy[:3])
     return pin.SE3(R,p)
 
-def load_ur5_with_obstacles(robotname='ur5',reduced=False):
+def load_ur5_with_obstacles(robotname='ur5',reduced=False, obstacles = True):
 
     ### Robot
     # Load the robot
@@ -33,38 +33,40 @@ def load_ur5_with_obstacles(robotname='ur5',reduced=False):
         robot.visual_data = robot.visual_model.createData()
         robot.q0 = robot.q0[unlocks].copy()
 
-    ### Obstacle map
-    # Capsule obstacles will be placed at these XYZ-RPY parameters
-    oMobs = [ [ 0.40,  0.,  0.30, np.pi/2,0,0],
-              [-0.08, -0.,  0.69, np.pi/2,0,0],
-              [ 0.23, -0.,  0.04, np.pi/2, 0 ,0 ],
-              [-0.32,  0., -0.08, np.pi/2, 0, 0]]
 
-    # Load visual objects and add them in collision/visual models
-    color = [ 1.0, 0.2, 0.2, 1.0 ]                       # color of the capsules
-    rad,length = .1,0.4                                  # radius and length of capsules
-    for i,xyzrpy in enumerate(oMobs):
-        obs = pin.GeometryObject.CreateCapsule(rad,length)  # Pinocchio obstacle object
-        obs.meshColor = np.array([ 1.0, 0.2, 0.2, 1.0 ])    # Don't forget me, otherwise I am transparent ...
-        obs.name = "obs%d"%i                                # Set object name
-        obs.parentJoint = 0                                 # Set object parent = 0 = universe
-        obs.placement = XYZRPYtoSE3(xyzrpy)  # Set object placement wrt parent
-        robot.collision_model.addGeometryObject(obs)  # Add object to collision model
-        robot.visual_model   .addGeometryObject(obs)  # Add object to visual model
+    if obstacles:
+        ### Obstacle map
+        # Capsule obstacles will be placed at these XYZ-RPY parameters
+        oMobs = [ [ 0.40,  0.,  0.30, np.pi/2,0,0],
+                  [-0.08, -0.,  0.69, np.pi/2,0,0],
+                  [ 0.23, -0.,  0.04, np.pi/2, 0 ,0 ],
+                  [-0.32,  0., -0.08, np.pi/2, 0, 0]]
 
-    ### Collision pairs
-    nobs = len(oMobs)
-    nbodies = robot.collision_model.ngeoms-nobs
-    robotBodies = range(nbodies)
-    envBodies = range(nbodies,nbodies+nobs) 
-    robot.collision_model.removeAllCollisionPairs()
-    for a,b in itertools.product(robotBodies,envBodies):
-        robot.collision_model.addCollisionPair(pin.CollisionPair(a,b))
-    
-    ### Geom data
-    # Collision/visual models have been modified => re-generate corresponding data.
-    robot.collision_data = pin.GeometryData(robot.collision_model)
-    robot.visual_data    = pin.GeometryData(robot.visual_model   )
+        # Load visual objects and add them in collision/visual models
+        color = [ 1.0, 0.2, 0.2, 1.0 ]                       # color of the capsules
+        rad,length = .1,0.4                                  # radius and length of capsules
+        for i,xyzrpy in enumerate(oMobs):
+            obs = pin.GeometryObject.CreateCapsule(rad,length)  # Pinocchio obstacle object
+            obs.meshColor = np.array([ 1.0, 0.2, 0.2, 1.0 ])    # Don't forget me, otherwise I am transparent ...
+            obs.name = "obs%d"%i                                # Set object name
+            obs.parentJoint = 0                                 # Set object parent = 0 = universe
+            obs.placement = XYZRPYtoSE3(xyzrpy)  # Set object placement wrt parent
+            robot.collision_model.addGeometryObject(obs)  # Add object to collision model
+            robot.visual_model   .addGeometryObject(obs)  # Add object to visual model
+
+        ### Collision pairs
+        nobs = len(oMobs)
+        nbodies = robot.collision_model.ngeoms-nobs
+        robotBodies = range(nbodies)
+        envBodies = range(nbodies,nbodies+nobs) 
+        robot.collision_model.removeAllCollisionPairs()
+        for a,b in itertools.product(robotBodies,envBodies):
+            robot.collision_model.addCollisionPair(pin.CollisionPair(a,b))
+        
+        ### Geom data
+        # Collision/visual models have been modified => re-generate corresponding data.
+        robot.collision_data = pin.GeometryData(robot.collision_model)
+        robot.visual_data    = pin.GeometryData(robot.visual_model   )
 
     return robot
 
