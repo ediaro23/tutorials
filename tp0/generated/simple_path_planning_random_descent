@@ -2,6 +2,8 @@
 # steps.
 def randomDescent(q0 = None):
      q = qrand(check=True) if q0 is None else q0
+     viz.display(q)
+     time.sleep(5e-1)
      hist = [ q.copy() ]
      for i in range(100):
           dq = qrand()*.1                           # Choose a random step ...
